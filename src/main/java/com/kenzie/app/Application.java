@@ -10,40 +10,53 @@ import java.util.Scanner;
 public class Application {
     public static final String FORTUNE_FILENAME = "fortunes.txt";
 
-    public static void main(String args[])  {
+    public static void main(String args[]) {
         //TODO: Wrap the main code in a try/catch statement
+        try {
+            //DO NOT MODIFY THIS BLOCK
+            Scanner scan = new Scanner(System.in);
+            String input;
+            int numberInput = 0;
+            boolean needInput = true;
+            //END BLOCK
 
-        //DO NOT MODIFY THIS BLOCK
-        Scanner scan = new Scanner(System.in);
-        String input;
-        int numberInput = 0;
-        boolean needInput = true;
-        //END BLOCK
 
-        //Read in user input - loop until user enters correct input
-        while (needInput) {
-            //TODO: wrap the code inside the while event loop with a try/catch block
-            displayMenu();
-            input = scan.nextLine();
-            checkForEmptyString(input);
-            numberInput = convertStringInput(input);
-            if (numberInput > 0) {
-                needInput = false;
+            //Read in user input - loop until user enters correct input
+            while (needInput) {
+                try {
+                    //TODO: wrap the code inside the while event loop with a try/catch block
+
+                    displayMenu();
+                    input = scan.nextLine();
+                    checkForEmptyString(input);
+                    numberInput = convertStringInput(input);
+                    if (numberInput > 0) {
+                        needInput = false;
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Non-numeric string was entered. Please try again.");
+                } catch (CustomEmptyStringException ce) {
+                    System.out.println(ce.getMessage());
+                    System.out.println("Please try again.");
+                }
             }
+
+
+            //DO NOT MODIFY THIS BLOCK
+            //Check user input for valid number value
+            isInputValid(numberInput);
+
+            //Selects and displays fortune based on number found
+            displayResult(numberInput);
+            //END BLOCK
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
-
-
-        //DO NOT MODIFY THIS BLOCK
-        //Check user input for valid number value
-        isInputValid(numberInput);
-
-        //Selects and displays fortune based on number found
-        displayResult(numberInput);
-        //END BLOCK
     }
 
+
     // TODO: throw correct exceptions in method signature
-    private static void displayResult(int number)  {
+    private static void displayResult(int number) throws FileNotFoundException, IOException {
         // display result
         switch (number) {
             case 1:
@@ -76,14 +89,19 @@ public class Application {
     public static boolean isInputValid(int cleanNumber){
         // TODO: fill in this method; throw IllegalArgumentException if the number is invalid
         // otherwise return true
-
-        return false;  //replace when writing method
+        if(cleanNumber < 1 || cleanNumber > 3){
+            throw new IllegalArgumentException("Number must be between 1 and 3");
+        }
+            return true;  //replace when writing method
     }
     
     // Use this method to throw a custom Exception of type CustomWhiteSpaceException
     // With message: "Invalid input: Empty string entered."
-    public static void checkForEmptyString(String input){
+    public static void checkForEmptyString(String input) {
         // TODO: fill in this method; throw CustomEmptyStringException if the input is empty string
+        if (input.isEmpty()){
+            throw new CustomEmptyStringException("Invalid input: Empty string entered.");
+        }
 
     }
 
